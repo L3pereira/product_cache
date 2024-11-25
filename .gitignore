@@ -1,0 +1,23 @@
+# Compiled object files
+*.o
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Temporary files
+*~
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# CMake build folders
+/build/
+
+# Logs and databases
+*.log
+*.db
+*.sqlite
