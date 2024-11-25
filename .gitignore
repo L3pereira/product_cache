@@ -5,6 +5,8 @@
 *.exe
 *.out
 *.app
+main
+product_cache
 
 # Temporary files
 *~
