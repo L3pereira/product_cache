@@ -19,7 +19,7 @@ struct Product {
 class ProductDatabase {
 public:
     // Fetch product details by ID (returns nullopt if not found)
-    std::optional<Product> fetchProductDetails(uint64_t product_id) const {
+    virtual std::optional<Product> fetchProductDetails(uint64_t product_id) const {
         // Simulated database with hardcoded products
         static const std::unordered_map<uint64_t, Product> database = {
             {1, {1, 101, "Laptop", "High-end gaming laptop", {0xAA, 0xBB}}},

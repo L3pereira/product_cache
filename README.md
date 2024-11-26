@@ -55,31 +55,47 @@ The `main()` function:
 ## **File Structure**
 ```plaintext
 .
-├── LRUCache.h         # Implements the generic thread-safe LRU cache
-├── Product.h          # Defines the Product structure and database simulation
-├── ProductCache.h     # Combines the database and cache functionality
-├── main.cpp           # Main program to demonstrate the system
-└── README.md          # This documentation file
+├── CMakeLists.txt       # CMake configuration file for building the project
+├── include/             # Header files
+│   ├── LRUCache.h       # Implements the generic thread-safe LRU cache
+│   ├── Product.h        # Defines the Product structure and database simulation
+│   └── ProductCache.h   # Combines the database and cache functionality
+├── src/                 # Source files (implementation)
+│   └── main.cpp         # Main program to demonstrate the system
+├── tests/               # Unit tests
+│   ├── test_product_cache.cpp  # Unit tests for ProductCache
+│   ├── test_lru_cache.cpp      # Unit tests for LRUCache
+│   └── MockProductDatabase.h   # Mock database for testing
+└── README.md            # This documentation file
 ```
 
 ## **Requirements**
 - **C++ Compiler**: Requires a C++17 or later standard.
 - **Threading**: Uses `std::thread` and requires the `-pthread` flag during compilation.
+- **Google Test**: Used for unit tests.
 
 ---
 
 ## **Usage**
 
 ### **Compilation**
-Use the following command to compile the program:
-```bash
-g++ -std=c++20 -pthread main.cpp -o product_cache
-```
+Use the following commands to build the project with CMake:
 
+1 - Create a build directory and configure the project for compiling, linking and building:
+```bash
+mkdir build
+cd build
+cmake ..
+```
+2 - Compiles the project and generate the binaries:
+```bash
+make
+```
+This will generate the product_cache executable in the bin/ folder.
 ### **Execution**
 Run the compiled program:
 ```bash
-./product_cache
+./bin/product_cache
 ```
 
 ### **Expected Output**
@@ -90,4 +106,30 @@ Fetched Product: Phone [ID: 2] <--- Fetched from Db
 Fetched Product: Laptop [ID: 1] <--- Fetched from cache
 ```
 
+### **Testing**
+#### Unit Tests
+Unit tests are available for both the ProductCache and LRUCache components.
 
+To build and run the tests, use CMake as follows:
+
+In the build directory (after comilation and building) Run the tests using:
+```bash
+ctest
+```
+
+This will run all the registered tests for ProductCache and LRUCache.
+
+Alternatively, you can run individual test binaries:
+
+```bash
+./bin/test_product_cache  # Run tests for ProductCache
+./bin/test_lru_cache      # Run tests for LRUCache
+```
+
+### Cleaning the Build
+
+To clean up the generated build files (like compiled binaries and temporary files):
+```bash
+rm -rf build/*
+```
+This will remove all generated files from the build/ directory.
