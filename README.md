@@ -57,19 +57,19 @@ The `main()` function:
 .
 ├── CMakeLists.txt            # CMake configuration file for building the project
 ├── include/                  # Header files
-│   ├── LRUCache.h            # Implements the generic thread-safe LRU cache
-│   ├── Product.h             # Defines the Product structure and database simulation
-│   ├── ProductCache.h        # Combines the database and cache functionality
-│   └── ProductDatabase.h     # Simulates a database interface for fetching product details
+│   ├── lru_cache.h            # Implements the generic thread-safe LRU cache
+│   ├── product.h             # Defines the Product structure and database simulation
+│   ├── product_cache.h        # Combines the database and cache functionality
+│   └── product_database.h     # Simulates a database interface for fetching product details
 ├── src/                      # Source files (implementation)
-│   ├── ProductCache.cpp      # Implements the ProductCache logic (fetch from cache or DB)
-│   ├── ProductDatabase.cpp   # Implements the ProductDatabase logic (mock or real database)
+│   ├── product_cache.cpp      # Implements the ProductCache logic (fetch from cache or DB)
+│   ├── product_database.cpp   # Implements the ProductDatabase logic (mock or real database)
 ├── examples/                 # Example folder (for demonstration or main program)
 │   └── main.cpp              # Main program to demonstrate the system with threads
 ├── tests/                    # Unit tests
 │   ├── test_product_cache.cpp  # Unit tests for ProductCache
 │   ├── test_lru_cache.cpp      # Unit tests for LRUCache
-│   └── MockProductDatabase.h   # Mock database for testing ProductCache
+│   └── mock_product_database.h   # Mock database for testing ProductCache
 └── README.md                 # Documentation file
 
 ```
