@@ -1,7 +1,7 @@
 #ifndef PRODUCTDATABASE_H
 #define PRODUCTDATABASE_H
 
-#include "Product.h"
+#include "product.h"
 #include <optional>
 
 // ProductDatabase class to simulate product storage and access

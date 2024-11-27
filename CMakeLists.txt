@@ -17,8 +17,8 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Add the library (ProductCache with ProductDatabase and LRUCache)
 add_library(product_cache STATIC
-    src/ProductCache.cpp
-    src/ProductDatabase.cpp   # Include ProductDatabase.cpp
+    src/product_cache.cpp
+    src/product_database.cpp   # Include ProductDatabase.cpp
 )
 
 # Main executable (Optional)
@@ -41,5 +41,5 @@ target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main 
 target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main pthread)
 
 # Register the tests with CTest
-add_test(NAME ProductCacheTests COMMAND test_product_cache)
-add_test(NAME LRUCacheTests COMMAND test_lru_cache)
+add_test(NAME product_cache_tests COMMAND test_product_cache)
+add_test(NAME lru_cache_tests COMMAND test_lru_cache)

@@ -1,7 +1,7 @@
 #ifndef MOCKPRODUCTDATABASE_H
 #define MOCKPRODUCTDATABASE_H
 
-#include "Product.h"
+#include "product.h"
 #include <unordered_map>
 #include <optional>
 

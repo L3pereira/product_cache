@@ -1,4 +1,4 @@
-#include "ProductDatabase.h"
+#include "product_database.h"
 #include <unordered_map>
 
 // Simulated database with hardcoded products

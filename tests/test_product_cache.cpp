@@ -1,9 +1,9 @@
-#include "ProductCache.h"
-#include "MockProductDatabase.h"
+#include "product_cache.h"
+#include "mock_product_database.h"
 #include <gtest/gtest.h>
 
 // Test for basic product retrieval
-TEST(ProductCacheTest, BasicRetrieval) {
+TEST(product_cache_test, basic_retrieval) {
     // Create a ProductCache instance with the mock database
     MockProductDatabase mock_db;
     ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
@@ -20,7 +20,7 @@ TEST(ProductCacheTest, BasicRetrieval) {
 }
 
 // Test for cache eviction
-TEST(ProductCacheTest, EvictionPolicy) {
+TEST(product_cache_test, eviction_policy) {
     // Create a ProductCache instance with the mock database
     MockProductDatabase mock_db;
     ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
@@ -39,7 +39,7 @@ TEST(ProductCacheTest, EvictionPolicy) {
 }
 
 // Test for missing product
-TEST(ProductCacheTest, MissingProduct) {
+TEST(product_cache_test, missing_product) {
     // Create a ProductCache instance with the mock database
     MockProductDatabase mock_db;
     ProductCache cache(2, &mock_db); // Pass mock database to ProductCache

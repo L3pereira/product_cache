@@ -1,9 +1,9 @@
 #ifndef PRODUCTCACHE_H
 #define PRODUCTCACHE_H
 
-#include "Product.h"
-#include "LRUCache.h"
-#include "ProductDatabase.h"
+#include "product.h"
+#include "lru_cache.h"
+#include "product_database.h"
 #include <optional>
 #include <mutex>
 
