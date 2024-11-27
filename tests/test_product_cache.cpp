@@ -4,7 +4,9 @@
 
 // Test for basic product retrieval
 TEST(ProductCacheTest, BasicRetrieval) {
-    ProductCache cache(2); // Cache capacity = 2
+    // Create a ProductCache instance with the mock database
+    MockProductDatabase mock_db;
+    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
 
     // Fetch a product (should come from the mock database)
     auto product = cache.getProduct(1);
@@ -19,7 +21,9 @@ TEST(ProductCacheTest, BasicRetrieval) {
 
 // Test for cache eviction
 TEST(ProductCacheTest, EvictionPolicy) {
-    ProductCache cache(2); // Cache capacity = 2
+    // Create a ProductCache instance with the mock database
+    MockProductDatabase mock_db;
+    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
 
     // Add two products to the cache
     cache.getProduct(1);
@@ -36,7 +40,9 @@ TEST(ProductCacheTest, EvictionPolicy) {
 
 // Test for missing product
 TEST(ProductCacheTest, MissingProduct) {
-    ProductCache cache(2); // Cache capacity = 2
+    // Create a ProductCache instance with the mock database
+    MockProductDatabase mock_db;
+    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
 
     // Fetch a non-existent product ID
     auto missing_product = cache.getProduct(999);

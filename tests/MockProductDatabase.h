@@ -12,7 +12,7 @@ public:
     std::optional<Product> fetchProductDetails(uint64_t product_id) const override {
         // Simulated data for testing
         static const std::unordered_map<uint64_t, Product> mock_data = {
-            {1, {1, 101, "Laptop", "High-end gaming laptop", {}}},
+            {1, {1, 101, "Laptop", "High-end gaming laptop", {}}}, 
             {2, {2, 102, "Phone", "Latest smartphone", {}}},
             {3, {3, 103, "Tablet", "Compact and powerful tablet", {}}}
         };

@@ -55,18 +55,23 @@ The `main()` function:
 ## **File Structure**
 ```plaintext
 .
-├── CMakeLists.txt       # CMake configuration file for building the project
-├── include/             # Header files
-│   ├── LRUCache.h       # Implements the generic thread-safe LRU cache
-│   ├── Product.h        # Defines the Product structure and database simulation
-│   └── ProductCache.h   # Combines the database and cache functionality
-├── src/                 # Source files (implementation)
-│   └── main.cpp         # Main program to demonstrate the system
-├── tests/               # Unit tests
+├── CMakeLists.txt            # CMake configuration file for building the project
+├── include/                  # Header files
+│   ├── LRUCache.h            # Implements the generic thread-safe LRU cache
+│   ├── Product.h             # Defines the Product structure and database simulation
+│   ├── ProductCache.h        # Combines the database and cache functionality
+│   └── ProductDatabase.h     # Simulates a database interface for fetching product details
+├── src/                      # Source files (implementation)
+│   ├── ProductCache.cpp      # Implements the ProductCache logic (fetch from cache or DB)
+│   ├── ProductDatabase.cpp   # Implements the ProductDatabase logic (mock or real database)
+├── examples/                 # Example folder (for demonstration or main program)
+│   └── main.cpp              # Main program to demonstrate the system with threads
+├── tests/                    # Unit tests
 │   ├── test_product_cache.cpp  # Unit tests for ProductCache
 │   ├── test_lru_cache.cpp      # Unit tests for LRUCache
-│   └── MockProductDatabase.h   # Mock database for testing
-└── README.md            # This documentation file
+│   └── MockProductDatabase.h   # Mock database for testing ProductCache
+└── README.md                 # Documentation file
+
 ```
 
 ## **Requirements**
@@ -81,17 +86,21 @@ The `main()` function:
 ### **Compilation**
 Use the following commands to build the project with CMake:
 
-1 - Create a build directory and configure the project for compiling, linking and building:
+1 - Create a build directory and configure the project
+- This step configures the project and generates the necessary build files (such as Makefiles or project files for your chosen build system).
+- It's recommended to create a separate build directory to keep the source directory clean.
 ```bash
 mkdir build
 cd build
 cmake ..
 ```
-2 - Compiles the project and generate the binaries:
+2 - Compiles the project:
+- After CMake finishes configuring the project, use the following command to compile and link the project using the generated build files.
 ```bash
 make
 ```
-This will generate the product_cache executable in the bin/ folder.
+This will generate in the bin/ folder the final executable or library as specified in the CMakeLists.txt file the lib product_cache and the executable product_cache_example.
+(The executable is optional and can be commented in the CMakeLists.txt)
 ### **Execution**
 Run the compiled program:
 ```bash

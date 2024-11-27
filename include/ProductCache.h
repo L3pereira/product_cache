@@ -1,34 +1,25 @@
 #ifndef PRODUCTCACHE_H
 #define PRODUCTCACHE_H
 
-#include "LRUCache.h"
 #include "Product.h"
+#include "LRUCache.h"
+#include "ProductDatabase.h"
+#include <optional>
+#include <mutex>
 
 // Class to manage product queries and cache
 class ProductCache {
-private:
-    ProductDatabase db;                    // Instance of the database
-    LRUCache<uint64_t, Product> cache;     // LRU cache for product details
-
 public:
-    // Constructor to initialize the cache with a given capacity
-    explicit ProductCache(size_t cache_capacity) : cache(cache_capacity) {}
+    // Constructor declaration
+    explicit ProductCache(size_t cache_capacity, ProductDatabase* db = nullptr);
 
-    // Fetch product details from cache or database
-    std::optional<Product> getProduct(uint64_t product_id) {
-        // Try to fetch from cache
-        auto cached_product = cache.get(product_id);
-        if (cached_product.has_value()) {
-            return cached_product; // Return cached product if found
-        }
+    // Fetch product details by ID (users can access the product's fields)
+    std::optional<Product> getProduct(uint64_t product_id);
 
-        // If not in cache, fetch from the database
-        auto db_product = db.fetchProductDetails(product_id);
-        if (db_product.has_value()) {
-            cache.put(product_id, db_product.value()); // Cache the fetched product
-        }
-        return db_product;
-    }
+private:
+    ProductDatabase* db;            // Instance of ProductDatabase (hidden)
+    LRUCache<uint64_t, Product> cache;  // LRU cache for product details
+    std::mutex mutex_;  // Mutex to ensure thread-safe access
 };
 
 #endif // PRODUCTCACHE_H

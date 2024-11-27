@@ -12,28 +12,34 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Output directories for binaries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Include current directory and 'include' folder for headers
-include_directories(${CMAKE_SOURCE_DIR})  # Adds the root directory (where ProductCache.h is located)
-include_directories(${CMAKE_SOURCE_DIR}/include)  # Adds the 'include' folder
+# Include directories for header files
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Main executable
-add_executable(product_cache src/main.cpp)
+# Add the library (ProductCache with ProductDatabase and LRUCache)
+add_library(product_cache STATIC
+    src/ProductCache.cpp
+    src/ProductDatabase.cpp   # Include ProductDatabase.cpp
+)
 
-# Unit tests
+# Main executable (Optional)
+add_executable(product_cache_example examples/main.cpp)
+target_link_libraries(product_cache_example product_cache)
+
 # Enable testing
 enable_testing()
 
-# Add test executables
+# Add test executables for ProductCache and LRUCache tests
 add_executable(test_product_cache tests/test_product_cache.cpp)
 add_executable(test_lru_cache tests/test_lru_cache.cpp)
 
-# Link Google Test (find package first)
+# Find Google Test and include its directories
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-target_link_libraries(test_product_cache GTest::GTest GTest::Main pthread)
-target_link_libraries(test_lru_cache GTest::GTest GTest::Main pthread)
+# Link the test executables with the product_cache library and Google Test
+target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main pthread)
+target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main pthread)
 
-# Add tests to CMake
+# Register the tests with CTest
 add_test(NAME ProductCacheTests COMMAND test_product_cache)
 add_test(NAME LRUCacheTests COMMAND test_lru_cache)
