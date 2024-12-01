@@ -3,10 +3,11 @@
 #include <gtest/gtest.h>
 
 // Test for basic product retrieval
-TEST(product_cache_test, basic_retrieval) {
+TEST(product_cache_test, basic_retrieval)
+{
     // Create a ProductCache instance with the mock database
-    MockProductDatabase mock_db;
-    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
+    auto mock_db = std::make_unique<MockProductDatabase>(); // Use unique_ptr for the mock database
+    ProductCache cache(2, std::move(mock_db));              // Pass unique_ptr to ProductCache
 
     // Fetch a product (should come from the mock database)
     auto product = cache.getProduct(1);
@@ -20,10 +21,11 @@ TEST(product_cache_test, basic_retrieval) {
 }
 
 // Test for cache eviction
-TEST(product_cache_test, eviction_policy) {
+TEST(product_cache_test, eviction_policy)
+{
     // Create a ProductCache instance with the mock database
-    MockProductDatabase mock_db;
-    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
+    auto mock_db = std::make_unique<MockProductDatabase>(); // Use unique_ptr for the mock database
+    ProductCache cache(2, std::move(mock_db));              // Pass unique_ptr to ProductCache
 
     // Add two products to the cache
     cache.getProduct(1);
@@ -39,10 +41,11 @@ TEST(product_cache_test, eviction_policy) {
 }
 
 // Test for missing product
-TEST(product_cache_test, missing_product) {
+TEST(product_cache_test, missing_product)
+{
     // Create a ProductCache instance with the mock database
-    MockProductDatabase mock_db;
-    ProductCache cache(2, &mock_db); // Pass mock database to ProductCache
+    auto mock_db = std::make_unique<MockProductDatabase>(); // Use unique_ptr for the mock database
+    ProductCache cache(2, std::move(mock_db));              // Pass unique_ptr to ProductCache
 
     // Fetch a non-existent product ID
     auto missing_product = cache.getProduct(999);

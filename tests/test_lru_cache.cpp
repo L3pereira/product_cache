@@ -2,7 +2,8 @@
 #include <gtest/gtest.h>
 
 // Test for basic insertion and retrieval
-TEST(lru_cache_test, basic_insertion_retrieval) {
+TEST(lru_cache_test, basic_insertion_retrieval)
+{
     LRUCache<int, std::string> cache(2);
     cache.put(1, "one");
     cache.put(2, "two");
@@ -13,7 +14,8 @@ TEST(lru_cache_test, basic_insertion_retrieval) {
 }
 
 // Test for eviction policy
-TEST(lru_cache_test, eviction_policy) {
+TEST(lru_cache_test, eviction_policy)
+{
     LRUCache<int, std::string> cache(2);
     cache.put(1, "one");
     cache.put(2, "two");
@@ -28,7 +30,8 @@ TEST(lru_cache_test, eviction_policy) {
 }
 
 // Test for accessing non-existent keys
-TEST(lru_cache_test, missing_key) {
+TEST(lru_cache_test, missing_key)
+{
     LRUCache<int, std::string> cache(2);
     cache.put(1, "one");
 

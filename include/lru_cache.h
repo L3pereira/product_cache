@@ -3,60 +3,63 @@
 
 #include <unordered_map>
 #include <list>
-#include <mutex>
 #include <optional>
 
 // Generic LRU (Least Recently Used) Cache implementation
-template<typename Key, typename Value>
-class LRUCache {
+template <typename Key, typename Value>
+class LRUCache
+{
 private:
-    size_t capacity; // Maximum number of items the cache can hold
-    std::list<std::pair<Key, Value>> items; // Doubly linked list to maintain LRU order
-    std::unordered_map<Key, typename std::list<std::pair<Key, Value>>::iterator> cache_map; // Hash map for O(1) access
-    mutable std::mutex cache_mutex; // Mutex for thread safety
+    size_t _capacity;                                                                        // Maximum number of items the cache can hold
+    std::list<std::pair<Key, Value>> _items;                                                 // Doubly linked list to maintain LRU order
+    std::unordered_map<Key, typename std::list<std::pair<Key, Value>>::iterator> _cache_map; // Hash map for O(1) access
 
     // Moves an accessed item to the front of the list
-    void moveToFront(typename std::list<std::pair<Key, Value>>::iterator it) {
-        items.splice(items.begin(), items, it);
+    void _moveToFront(typename std::list<std::pair<Key, Value>>::iterator it)
+    {
+        _items.splice(_items.begin(), _items, it);
     }
 
 public:
     // Constructor to initialize the cache with a fixed capacity
-    explicit LRUCache(size_t max_size) : capacity(max_size) {}
+    explicit LRUCache(size_t max_size) : _capacity(max_size) {}
 
     // Retrieves an item from the cache, if it exists
-    std::optional<Value> get(const Key& key) {
-        std::lock_guard<std::mutex> lock(cache_mutex);
-        auto it = cache_map.find(key);
-        if (it == cache_map.end()) {
+    std::optional<Value> get(const Key &key)
+    {
+        auto it = _cache_map.find(key);
+        if (it == _cache_map.end())
+        {
             return std::nullopt; // Return empty if item is not found
         }
-        moveToFront(it->second); // Mark as recently used
+        _moveToFront(it->second);  // Mark as recently used
         return it->second->second; // Return the cached value
     }
 
     // Adds an item to the cache, evicting the least recently used item if necessary
-    void put(const Key& key, const Value& value) {
-        std::lock_guard<std::mutex> lock(cache_mutex);
-        auto it = cache_map.find(key);
+    void put(const Key &key, const Value &value)
+    {
+        auto it = _cache_map.find(key);
 
         // Update value if the key already exists
-        if (it != cache_map.end()) {
+        if (it != _cache_map.end())
+        {
             it->second->second = value;
-            moveToFront(it->second);
+            _moveToFront(it->second);
             return;
         }
 
         // Evict the least recently used item if cache is full
-        if (items.size() == capacity) {
-            auto last = items.back();
-            cache_map.erase(last.first);
-            items.pop_back();
+        if (_items.size() == _capacity)
+        {
+            auto last = _items.back();
+            _cache_map.erase(last.first);
+            _items.pop_back();
         }
 
         // Insert the new item at the front
-        items.emplace_front(key, value);
-        cache_map[key] = items.begin();
+        _items.emplace_front(key, value);
+        _cache_map[key] = _items.begin();
     }
 };
 
