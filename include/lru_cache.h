@@ -5,15 +5,16 @@
 #include <unordered_map>
 #include <list>
 #include <optional>
+#include <memory>
 
 // Generic LRU (Least Recently Used) Cache implementation
 template <typename Key, typename Value>
 class LRUCache : public ICache<Key, Value>
 {
 private:
-    size_t _capacity;                                                                        // Maximum number of items the cache can hold
-    std::list<std::pair<Key, Value>> _items;                                                 // Doubly linked list to maintain LRU order
-    std::unordered_map<Key, typename std::list<std::pair<Key, Value>>::iterator> _cache_map; // Hash map for O(1) access
+    size_t _capacity;                                                                                         // Maximum number of items the cache can hold
+    std::list<std::pair<Key, Value>> _items;                                                                  // Doubly linked list to maintain LRU order
+    std::unordered_map<Key, std::shared_ptr<typename std::list<std::pair<Key, Value>>::iterator>> _cache_map; // Hash map for O(1) access
 
     // Moves an accessed item to the front of the list
     void _moveToFront(typename std::list<std::pair<Key, Value>>::iterator it)
@@ -33,8 +34,9 @@ public:
         {
             return std::nullopt; // Return empty if item is not found
         }
-        _moveToFront(it->second);  // Mark as recently used
-        return it->second->second; // Return the cached value
+        // Dereference shared pointer to get the iterator
+        _moveToFront(*it->second);      // Mark as recently used
+        return (*(*it->second)).second; // Return the cached value
     }
 
     // Adds an item to the cache, evicting the least recently used item if necessary
@@ -45,8 +47,9 @@ public:
         // Update value if the key already exists
         if (it != _cache_map.end())
         {
-            it->second->second = value;
-            _moveToFront(it->second);
+            // Dereference shared pointer to update the value in the list
+            (*(*it->second)).second = value;
+            _moveToFront(*it->second);
             return;
         }
 
@@ -60,7 +63,9 @@ public:
 
         // Insert the new item at the front
         _items.emplace_front(key, value);
-        _cache_map[key] = _items.begin();
+
+        // Store a shared pointer to the iterator pointing to the newly added node
+        _cache_map[key] = std::make_shared<typename std::list<std::pair<Key, Value>>::iterator>(_items.begin());
     }
 };
 
