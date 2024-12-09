@@ -32,13 +32,20 @@ enable_testing()
 add_executable(test_product_cache tests/test_product_cache.cpp)
 add_executable(test_lru_cache tests/test_lru_cache.cpp)
 
-# Find Google Test and include its directories
+# Cross-platform settings for Google Test
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-# Link the test executables with the product_cache library and Google Test
-target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main pthread)
-target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main pthread)
+# Add platform-specific libraries
+if(WIN32)
+    # On Windows, no pthread is needed
+    target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main)
+    target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main)
+else()
+    # On Unix-like systems, link pthread explicitly
+    target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main pthread)
+    target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main pthread)
+endif()
 
 # Register the tests with CTest
 add_test(NAME product_cache_tests COMMAND test_product_cache)
