@@ -1,12 +1,16 @@
 #include "product_cache.h"
+#include "product_database.h"
+#include "lru_cache.h"
+#include <memory>
+#include <shared_mutex>
 
-// Static default database instance
-static ProductDatabase default_db; // Default ProductDatabase object
+#include <mutex>
 
 // Constructor for ProductCache
-ProductCache::ProductCache(size_t cache_capacity, std::unique_ptr<ProductDatabase> db)
-    : _db(db ? std::move(db) : std::make_unique<ProductDatabase>(default_db)),
-      _cache(std::make_unique<LRUCache<uint64_t, Product>>(cache_capacity)) {} // Use default_db if db is nullptr
+ProductCache::ProductCache(std::shared_ptr<IDatabase> db,
+                           std::shared_ptr<ICache<uint64_t, Product>> cache)
+    : _db(std::move(db)),
+      _cache(std::move(cache)) {}
 
 // Fetch product details from cache or database
 std::optional<Product> ProductCache::getProduct(uint64_t product_id)

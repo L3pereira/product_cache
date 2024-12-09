@@ -1,13 +1,14 @@
 #ifndef LRUCACHE_H
 #define LRUCACHE_H
 
+#include "icache.h"
 #include <unordered_map>
 #include <list>
 #include <optional>
 
 // Generic LRU (Least Recently Used) Cache implementation
 template <typename Key, typename Value>
-class LRUCache
+class LRUCache : public ICache<Key, Value>
 {
 private:
     size_t _capacity;                                                                        // Maximum number of items the cache can hold
@@ -25,7 +26,7 @@ public:
     explicit LRUCache(size_t max_size) : _capacity(max_size) {}
 
     // Retrieves an item from the cache, if it exists
-    std::optional<Value> get(const Key &key)
+    std::optional<Value> get(const Key &key) override
     {
         auto it = _cache_map.find(key);
         if (it == _cache_map.end())
@@ -37,7 +38,7 @@ public:
     }
 
     // Adds an item to the cache, evicting the least recently used item if necessary
-    void put(const Key &key, const Value &value)
+    void put(const Key &key, const Value &value) override
     {
         auto it = _cache_map.find(key);
 

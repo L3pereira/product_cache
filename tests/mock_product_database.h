@@ -6,7 +6,7 @@
 #include <optional>
 
 // Mock database class for testing
-class MockProductDatabase : public ProductDatabase
+class MockProductDatabase : public IDatabase
 {
 public:
     // Override fetchProductDetails for testing purposes

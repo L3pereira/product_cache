@@ -1,15 +1,22 @@
 #ifndef PRODUCTDATABASE_H
 #define PRODUCTDATABASE_H
 
+#include "idatabase.h"
 #include "product.h"
+#include <unordered_map>
 #include <optional>
 
-// ProductDatabase class to simulate product storage and access
-class ProductDatabase
+class ProductDatabase : public IDatabase
 {
 public:
-    // Fetch product details by ID (returns nullopt if not found)
-    virtual std::optional<Product> fetchProductDetails(uint64_t product_id) const;
+    // Constructor to initialize the product database
+    ProductDatabase();
+
+    // Fetch product details by ID (override from IDatabase)
+    std::optional<Product> fetchProductDetails(uint64_t product_id) const override;
+
+private:
+    std::unordered_map<uint64_t, Product> _database; // Internal storage for products
 };
 
 #endif // PRODUCTDATABASE_H
