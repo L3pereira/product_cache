@@ -15,18 +15,14 @@ ProductCache::ProductCache(std::shared_ptr<IDatabase> db,
 // Fetch product details from cache or database
 std::optional<Product> ProductCache::getProduct(uint64_t product_id)
 {
-    // Try to fetch from cache (shared access)
+    std::unique_lock<std::shared_mutex> lock(_cache_mutex); // Exclusive lock for both read and write
+    auto cached_product = _cache->get(product_id);
+    if (cached_product.has_value())
     {
-        std::shared_lock<std::shared_mutex> lock(_cache_mutex);
-        auto cached_product = _cache->get(product_id);
-        if (cached_product.has_value())
-        {
-            return cached_product; // Return cached product if found
-        }
+        return cached_product; // Return cached product if found
     }
 
-    // If not in cache, fetch from the database (exclusive write access)
-    std::unique_lock<std::shared_mutex> lock(_cache_mutex);
+    // If not in cache, fetch from the database
     auto db_product = _db->fetchProductDetails(product_id);
     if (db_product.has_value())
     {
