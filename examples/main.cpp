@@ -8,7 +8,7 @@
 // Simulate a client fetching and printing product details
 void fetchAndPrint(std::shared_ptr<ProductCache> cache, uint64_t product_id)
 {
-    auto product = cache->getProduct(product_id);
+    auto product = cache->fetchProductDetails(product_id);
     if (product.has_value())
     {
         std::cout << "Fetched Product: " << product->name

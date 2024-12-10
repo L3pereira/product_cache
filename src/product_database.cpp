@@ -11,7 +11,7 @@ ProductDatabase::ProductDatabase()
 }
 
 // Fetch product details by ID
-std::optional<Product> ProductDatabase::fetchProductDetails(uint64_t product_id) const
+std::optional<Product> ProductDatabase::fetchProductDetails(uint64_t product_id)
 {
     auto it = _database.find(product_id);
     if (it != _database.end())

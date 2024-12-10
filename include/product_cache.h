@@ -8,15 +8,15 @@
 #include <shared_mutex>
 
 // Class to manage product queries and cache
-class ProductCache
+class ProductCache : public IDatabase
 {
 public:
     // Declare the constructor (no definition here)
     ProductCache(std::shared_ptr<IDatabase> db,
                  std::shared_ptr<ICache<uint64_t, Product>> cache);
 
-    // Fetch product details by ID (users can access the product's fields)
-    std::optional<Product> getProduct(uint64_t product_id);
+    // Override the fetchProductDetails method from IDatabase/Fetch product details by ID (users can access the product's fields)
+    std::optional<Product> fetchProductDetails(uint64_t product_id) override;
 
 private:
     std::shared_ptr<IDatabase> _db;                    // Exclusive ownership of ProductDatabase

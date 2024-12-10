@@ -10,7 +10,7 @@ class MockProductDatabase : public IDatabase
 {
 public:
     // Override fetchProductDetails for testing purposes
-    std::optional<Product> fetchProductDetails(uint64_t product_id) const override
+    std::optional<Product> fetchProductDetails(uint64_t product_id) override
     {
         // Simulated data for testing
         static const std::unordered_map<uint64_t, Product> mock_data = {

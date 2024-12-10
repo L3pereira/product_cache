@@ -18,12 +18,12 @@ TEST(product_cache_tests, basic_retrieval)
     cache->put(1, laptop);
 
     // Fetch a product (should come from the in-memory cache)
-    auto product = cache_manager.getProduct(1);
+    auto product = cache_manager.fetchProductDetails(1);
     ASSERT_TRUE(product.has_value());
     EXPECT_EQ(product->name, "Laptop");
 
     // Fetch the same product again (should come from cache)
-    auto cached_product = cache_manager.getProduct(1);
+    auto cached_product = cache_manager.fetchProductDetails(1);
     ASSERT_TRUE(cached_product.has_value());
     EXPECT_EQ(cached_product->name, "Laptop");
 }
@@ -49,7 +49,7 @@ TEST(product_cache_tests, eviction_policy)
     cache->put(3, tablet); // The cache should now contain 2 and 3, and 1 should be evicted
 
     // Check if the cache evicted product 1
-    auto evicted_product = cache_manager.getProduct(1); // Fetch product 1, should be fetched from the database again
+    auto evicted_product = cache_manager.fetchProductDetails(1); // Fetch product 1, should be fetched from the database again
     ASSERT_TRUE(evicted_product.has_value());
     EXPECT_EQ(evicted_product->name, "Laptop");
 }
@@ -65,6 +65,6 @@ TEST(product_cache_tests, missing_product)
     ProductCache cache_manager(mock_db, cache);
 
     // Fetch a non-existent product ID (should return from the database)
-    auto missing_product = cache_manager.getProduct(999);
+    auto missing_product = cache_manager.fetchProductDetails(999);
     EXPECT_FALSE(missing_product.has_value());
 }

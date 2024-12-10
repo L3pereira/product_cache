@@ -13,7 +13,7 @@ public:
     ProductDatabase();
 
     // Fetch product details by ID (override from IDatabase)
-    std::optional<Product> fetchProductDetails(uint64_t product_id) const override;
+    std::optional<Product> fetchProductDetails(uint64_t product_id) override;
 
 private:
     std::unordered_map<uint64_t, Product> _database; // Internal storage for products

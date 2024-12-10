@@ -13,7 +13,7 @@ ProductCache::ProductCache(std::shared_ptr<IDatabase> db,
       _cache(std::move(cache)) {}
 
 // Fetch product details from cache or database
-std::optional<Product> ProductCache::getProduct(uint64_t product_id)
+std::optional<Product> ProductCache::fetchProductDetails(uint64_t product_id)
 {
     std::unique_lock<std::shared_mutex> lock(_cache_mutex); // Exclusive lock for both read and write
     auto cached_product = _cache->get(product_id);
