@@ -30,3 +30,10 @@ std::optional<Product> ProductCache::fetchProductDetails(uint64_t product_id)
     }
     return db_product;
 }
+
+// Fetch products by category
+std::vector<Product> ProductCache::fetchProductsByCategory(uint32_t category_id)
+{
+    // No cache mechanism for categories; query the database directly
+    return _db->fetchProductsByCategory(category_id);
+}

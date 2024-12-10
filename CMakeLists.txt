@@ -31,6 +31,7 @@ enable_testing()
 # Add test executables for ProductCache and LRUCache tests
 add_executable(test_product_cache tests/test_product_cache.cpp)
 add_executable(test_lru_cache tests/test_lru_cache.cpp)
+add_executable(test_product_category tests/test_product_category.cpp)
 
 # Cross-platform settings for Google Test
 find_package(GTest REQUIRED)
@@ -41,12 +42,15 @@ if(WIN32)
     # On Windows, no pthread is needed
     target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main)
     target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main)
+    target_link_libraries(test_product_category product_cache GTest::GTest GTest::Main)
 else()
     # On Unix-like systems, link pthread explicitly
     target_link_libraries(test_product_cache product_cache GTest::GTest GTest::Main pthread)
     target_link_libraries(test_lru_cache product_cache GTest::GTest GTest::Main pthread)
+    target_link_libraries(test_product_category product_cache GTest::GTest GTest::Main pthread)
 endif()
 
 # Register the tests with CTest
 add_test(NAME product_cache_tests COMMAND test_product_cache)
 add_test(NAME lru_cache_tests COMMAND test_lru_cache)
+add_test(NAME product_category_tests COMMAND test_product_category)

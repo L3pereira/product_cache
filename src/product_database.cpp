@@ -20,3 +20,20 @@ std::optional<Product> ProductDatabase::fetchProductDetails(uint64_t product_id)
     }
     return std::nullopt; // Return nullopt if not found
 }
+
+// Fetch products by category
+std::vector<Product> ProductDatabase::fetchProductsByCategory(uint32_t category_id)
+{
+    std::vector<Product> products_in_category;
+
+    // Iterate through the database to find matching products
+    for (const auto &[id, product] : _database)
+    {
+        if (product.category == category_id)
+        {
+            products_in_category.push_back(product);
+        }
+    }
+
+    return products_in_category;
+}

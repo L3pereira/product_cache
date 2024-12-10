@@ -18,6 +18,9 @@ public:
     // Override the fetchProductDetails method from IDatabase/Fetch product details by ID (users can access the product's fields)
     std::optional<Product> fetchProductDetails(uint64_t product_id) override;
 
+    // Fetch products by category
+    std::vector<Product> fetchProductsByCategory(uint32_t category_id) override;
+
 private:
     std::shared_ptr<IDatabase> _db;                    // Exclusive ownership of ProductDatabase
     std::shared_ptr<ICache<uint64_t, Product>> _cache; // Exclusive ownership of LRUCache
