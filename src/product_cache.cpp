@@ -22,8 +22,22 @@ std::optional<Product> ProductCache::fetchProductDetails(uint64_t product_id)
         return cached_product; // Return cached product if found
     }
 
+    // Cache miss: fetch from the database, but first release the cache lock to prevent blocking
+    lock.unlock(); // Unlock the cache to allow other threads to access the cache
+
     // If not in cache, fetch from the database
     auto db_product = _db->fetchProductDetails(product_id);
+
+    // Re-lock the cache to update it
+    lock.lock(); // Re-acquire the cache lock for writing to the cache
+
+    // Double-check the cache in case another thread has inserted the product in the meantime
+    cached_product = _cache->get(product_id);
+    if (cached_product.has_value())
+    {
+        return cached_product;
+    }
+
     if (db_product.has_value())
     {
         _cache->put(product_id, db_product.value()); // Cache the fetched product

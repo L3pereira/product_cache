@@ -4,11 +4,19 @@
 #include <iostream>
 #include <thread>
 #include <memory> // For std::make_shared
+#include <mutex>  // For std::mutex
+
+// Mutex to synchronize access to std::cout
+std::mutex output_mutex;
 
 // Simulate a client fetching and printing product details
 void fetchAndPrint(std::shared_ptr<ProductCache> cache, uint64_t product_id)
 {
     auto product = cache->fetchProductDetails(product_id);
+
+    // Lock the mutex before accessing std::cout to prevent race conditions
+    std::lock_guard<std::mutex> lock(output_mutex);
+
     if (product.has_value())
     {
         std::cout << "Fetched Product: " << product->name
